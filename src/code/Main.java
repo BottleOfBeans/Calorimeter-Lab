@@ -1,4 +1,7 @@
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.swing.*;
 
 public class Main {
@@ -15,6 +18,16 @@ public class Main {
         window.setVisible(true);
         gameWindow.startWindowThread();
 
+        String pattern = "yyyy-MM-dd";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);        
+        String date  = simpleDateFormat.format(new Date());
+        
+        System.out.println("""
+            \n\n\n\n\n\n\n
+            Instance 
+            ============================
+            At:    
+                """ + date + "\n\n\n\n");
     }
 
 }

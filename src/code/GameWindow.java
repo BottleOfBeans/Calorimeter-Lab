@@ -1,11 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
+import java.awt.event.MouseListener;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.Random;
 
 public class GameWindow extends JPanel implements Runnable {
+    static int gameWidth = 1920; // gameColumnAmount*ActualTileSize;
+    static int gameHeight = 1080; // gameRowAmount*ActualTileSize;
+
+    static int FPS = 60;
+
+
     /*
         Colors for all of the componenets and stuff
     */ 
@@ -17,19 +21,26 @@ public class GameWindow extends JPanel implements Runnable {
     Vector2 topLeft = new Vector2(0,0);
     Vector2 topRight = new Vector2(0,gameWidth);    
     
-    double tableHeight = 400;
+    double tableHeight = gameHeight/3;
     Rectangle2D tableTop = new Rectangle2D.Double(bottomLeft.x, bottomLeft.y - tableHeight, gameWidth, tableHeight);
     
-    Image bananaObj = new Image("/src/sprites/banana.png", 200, 200, gameWidth/2, gameHeight/2);
-    Image robloxObj = new Image("/src/sprites/roblox.png", 32, 32, gameWidth/3, gameHeight/2);
-    
-    Image[] food = {bananaObj,robloxObj};
+    static Image background = new Image("src/sprites/background.png", 1920, 1080, 1920/2,1080/2);
 
-    Image foodInHand = null;
+    static Image tray = new Image("src/sprites/tray.png", 500, 200, (int) (gameWidth*0.8),(int)  (gameHeight*0.8));
+
+
+    static Image almond = new Image("src/sprites/almond.png", 50, 50, gameWidth/2 + 60, gameHeight/2);
+    static Image banana = new Image("src/sprites/banana.png", 50, 50, gameWidth/2 - 60, gameHeight/2);
+    static Image cheeto = new Image("src/sprites/cheeto.png", 50, 50, gameWidth/2 + 120 , gameHeight/2 );
+    static Image chip = new Image("src/sprites/chip.png", 50, 50, gameWidth/2 - 120, gameHeight/2);
+    static Image marshmellow = new Image("src/sprites/marshmellow.png", 50, 50, gameWidth/2 + 180, gameHeight/2);
+
+    static String urlsList[] = {"src/sprites/banana.png", "src/sprites/almond.png", "src/sprites/cheeto.png"};
+    static Image test = new Image("src/sprites/banana.png", 50, 50, gameWidth/2, gameHeight/2, urlsList, FPS/5);
     
-    static int gameWidth = 1920; // gameColumnAmount*ActualTileSize;
-    static int gameHeight = 1080; // gameRowAmount*ActualTileSize;
-    int FPS = 144;
+    static Image[] food = {almond, banana, cheeto, chip};
+    static Image[] props = {test,tray};
+
     Thread gameThread;
 
     
@@ -38,6 +49,7 @@ public class GameWindow extends JPanel implements Runnable {
         this.setBackground(backgroundColor);
         this.setDoubleBuffered(true);
         this.setFocusable(true);
+        this.addMouseListener(new MouseInput());
     }
 
     public void startWindowThread() {
@@ -88,7 +100,11 @@ public class GameWindow extends JPanel implements Runnable {
 ll of the food is convered to energy - some of the heat is left on the food and it cools down
              a       */
         // tempW = m * 4.184 * q
-        ;
+        if(MouseInput.pressed){
+            MouseInput.updateSelected();
+        }
+
+        test.cycleAnimation();
     }
 
     public void paintComponent(Graphics g) {
@@ -97,18 +113,24 @@ ll of the food is convered to energy - some of the heat is left on the food and 
         //Drawing Code goes here;
         
         //Background
+
+        background.drawImage(g);
+
         graphics.setColor(backgroundColor);
         graphics.drawRect(0,0, gameWidth, gameHeight);
 
-        //Table
+        //Props
         graphics.setColor(tableColor);
         graphics.fill(tableTop);
+        for(Image i : props){
+            i.drawImage(g);
+        }
 
         //Food
         for(Image i : food){
             i.drawImage(g);
         }
-
+        
         graphics.dispose();
     }
 
