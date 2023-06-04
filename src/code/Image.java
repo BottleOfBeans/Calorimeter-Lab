@@ -28,6 +28,7 @@ public class Image extends JPanel {
     public double prevMass = 0;
 
     public Graphics2D graphics;
+    public Image type = null;
     
     public Image(String url, int width, int height, int xPos, int yPos){
         
@@ -37,6 +38,19 @@ public class Image extends JPanel {
         this.currentPos = new Vector2(xPos,yPos);
         this.interactableRadius = Math.sqrt(width*width + height* height);
         interactableRadius = 50;
+        this.setType();
+        this.setSize();
+    }
+
+    public Image(String url, int width, int height, int xPos, int yPos, Image type){
+        
+        this.url = url;
+        this.width = width;
+        this.height = height;
+        this.currentPos = new Vector2(xPos,yPos);
+        this.interactableRadius = Math.sqrt(width*width + height* height);
+        interactableRadius = 50;
+        this.type = type;
         this.setType();
         this.setSize();
     }
@@ -65,6 +79,7 @@ public class Image extends JPanel {
 
         this.animURLS = animationURLs;
         this.FPS = FPS;
+        //this.FPS = 0;
         
         this.currentPos = new Vector2(xPos,yPos);
         this.interactableRadius = Math.sqrt(width*width + height* height);
@@ -75,11 +90,11 @@ public class Image extends JPanel {
 
     public void cycleAnimation(){
         switchTicks += 1;
-        if (switchTicks == FPS){
+        if (switchTicks >= FPS){
             switchTicks = 0;
             animationIndex += 1;
 
-            if (animationIndex == animURLS.length){
+            if (animationIndex >= animURLS.length){
                 animationIndex = 0;
             }
             

@@ -25,11 +25,6 @@ public class Thermometer extends JPanel{
         this.temp = temp;
     }
 
-    public int getHeight(){
-        int height = (temp/max_temp) * image.height;
-        return height;
-    }
-
 
     public void drawImage(Graphics a){
         
@@ -38,7 +33,6 @@ public class Thermometer extends JPanel{
         image.drawImage(g);
 
         g.setColor(Color.RED);
-        g.fill(new Rectangle2D.Double(image.currentPos.x - 5, image.currentPos.y - (image.height - ((temp) * image.height)) - image.height/2, 10, (temp) * image.height));
 
         //Text and Text Label
         Vector2 labelPos = new Vector2(image.currentPos.x - image.width/2, image.currentPos.y-labelHeight-image.height/2);

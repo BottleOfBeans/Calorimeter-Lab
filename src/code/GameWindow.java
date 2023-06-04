@@ -31,10 +31,13 @@ public class GameWindow extends JPanel implements Runnable {
     
     double tableHeight = gameHeight/3;
     Rectangle2D tableTop = new Rectangle2D.Double(bottomLeft.x, bottomLeft.y - tableHeight, gameWidth, tableHeight);
-    
+
     static Image background = new Image("src/sprites/backgroundDark1.png", 2000, 1100, 1920/2 ,1080/2);
-    static Image instructions = new Image("src/sprites/instructions.png", 500, 900, 1920/2 ,1080/2);
+    static Image instructions = new Image("src/sprites/instructions.png", 450, 700, 1920/2 ,1080/2);
     
+    static String fireUrlsList[] = {"src/sprites/fire/fire2.png", "src/sprites/fire/fire3.png", "src/sprites/fire/fire2.png"};
+    static Image fire = new Image("src/sprites/fire/fire1.png", 300, 200, 10000, 10000, fireUrlsList, FPS/10);
+
     static Image scale = new Image("src/sprites/scale.png", 500, 200, (int) (gameWidth/2),(int)  (gameHeight*0.8));
     static Image bowl = new Image("src/sprites/bowl.png", 500, 200, (int) (gameWidth/2),(int)  (gameHeight*0.8)-100);
     Rectangle2D bowlHitbox = new Rectangle2D.Double((int) (gameWidth/2) - 250,(int)  (gameHeight*0.8)-150,500, 100);
@@ -67,12 +70,18 @@ public class GameWindow extends JPanel implements Runnable {
     static Image thermometer_image = new Image("src/sprites/thermometer.png", 50, 150, 300,300);
     static Thermometer thermometer = new Thermometer(thermometer_image, -1);
 
-    static String testUrlsList[] = {"src/sprites/banana.png", "src/sprites/almond.png", "src/sprites/cheeto.png"};
-    static Image test = new Image("src/sprites/banana.png", 50, 50, gameWidth/2, gameHeight/2, testUrlsList, FPS/5);
+    static Vector2 nutrition_coords = new Vector2(gameWidth-200, 500);
+
+    static Image almond_nutrition = new Image("src/sprites/NutritionLabels/almond_nutritional.png", 250, 425, (int)nutrition_coords.x, (int)nutrition_coords.y, almond);
+    static Image banana_nutrition = new Image("src/sprites/NutritionLabels/banana_nutritional.png", 250, 425, (int)nutrition_coords.x, (int)nutrition_coords.y, banana);
+    static Image cheeto_nutrition = new Image("src/sprites/NutritionLabels/cheeto_nutritional.png", 250, 425, (int)nutrition_coords.x, (int)nutrition_coords.y, cheeto);
+    static Image chip_nutrition = new Image("src/sprites/NutritionLabels/chip_nutritional.png", 250, 425, (int)nutrition_coords.x, (int)nutrition_coords.y, chip);
+    static Image marshmellow_nutrition = new Image("src/sprites/NutritionLabels/marshmallow_nutritional.png", 200, 425, (int)nutrition_coords.x, (int)nutrition_coords.y, marshmellow);
     
     static Image[] food = {almond, banana, cheeto, chip, marshmellow};
     static Image[] dragabbles = {instructions,matchStick};
-    static Image[] props = {test, tray, scale, bowl, ringStand, cokeCan};
+    static Image[] props = {tray, scale, bowl, ringStand, cokeCan};
+    static Image[] nutrition_labels = {almond_nutrition, banana_nutrition, cheeto_nutrition, chip_nutrition, marshmellow_nutrition};
 
     ArrayList<Image> scaleContainer = new ArrayList<Image>();
     ArrayList<Image> burnContainer = new ArrayList<Image>();
@@ -145,8 +154,7 @@ public class GameWindow extends JPanel implements Runnable {
         if(MouseInput.pressed){
             MouseInput.updateSelected();
         }
-
-        test.cycleAnimation();
+        
     }
 
     public static void resetFoods(){
@@ -205,8 +213,9 @@ public class GameWindow extends JPanel implements Runnable {
        
         updateScale(g);
         updateThermometer();
-        updateBurn();
+        updateBurn(g);
         stabalizeTemps();
+        updateAllNutritionLabels();
         
         for(Image i : dragabbles){
             i.drawImage(g);
@@ -217,7 +226,14 @@ public class GameWindow extends JPanel implements Runnable {
             i.drawImage(g);
         }
 
+        for (Image i : nutrition_labels){
+            if (MouseInput.last_food_selected == i.type){
+                i.drawImage(g);
+            }
+        }
+
         thermometer.drawImage(g);
+        fire.drawImage(g);
 
         //graphics.fill(bowlHitbox);
         //graphics.fill(burnHitbox);
@@ -262,7 +278,13 @@ public class GameWindow extends JPanel implements Runnable {
         }
     }
 
-    public void updateBurn(){
+    public void updateAllNutritionLabels(){
+        for (Image i : nutrition_labels){
+            i.currentPos = nutrition_coords;
+        }
+    }
+
+    public void updateBurn(Graphics g){
 
         burnContainer.clear();
 
@@ -281,14 +303,16 @@ public class GameWindow extends JPanel implements Runnable {
 
     public void flame(){
         for(Image i : burnContainer){
+            
             i.burned = true;
             i.mass = i.finalMass;
             finalTemperature += i.tempreture;
             i.darken(0.25f);
-            //f is after demical to show that it is a flaot type
+            
+            //f is after demical to show that it is a float type
             //should be from 0 - 1
         }
-        System.out.println("The food has been burned (lit 100%)");
+        System.out.println("The food has been burned (lit 100%)");  
     }
 
     public void stabalizeTemps(){
