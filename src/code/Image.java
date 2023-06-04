@@ -49,7 +49,7 @@ public class Image extends JPanel{
         
         this.currentPos = new Vector2(xPos,yPos);
         this.interactableRadius = Math.sqrt(width*width + height* height);
-        interactableRadius = 50;
+        //interactableRadius = 50;
         this.setType();
         this.setSize();
     }

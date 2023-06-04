@@ -40,11 +40,21 @@ public class MouseInput implements MouseListener
 
         for(Image i : GameWindow.food){            
             Vector2 dist = mouseVector.returnSubtract(i.currentPos);
-            System.out.print("Dist: "+dist.magnitude());
             if (dist.magnitude() < i.interactableRadius){
                 selected = i;
-                System.out.println("Clicked on food!");
             }
+        }
+        for(Image i : GameWindow.dragabbles){            
+            Vector2 dist = mouseVector.returnSubtract(i.currentPos);
+            if (dist.magnitude() < i.interactableRadius){
+                selected = i;
+            }
+        }
+
+        // thermomter
+        Vector2 dist = mouseVector.returnSubtract(GameWindow.thermometer.image.currentPos);
+        if (dist.magnitude() < GameWindow.thermometer.image.interactableRadius){
+            selected = GameWindow.thermometer.image;
         }
     }
 

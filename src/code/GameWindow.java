@@ -24,21 +24,25 @@ public class GameWindow extends JPanel implements Runnable {
     double tableHeight = gameHeight/3;
     Rectangle2D tableTop = new Rectangle2D.Double(bottomLeft.x, bottomLeft.y - tableHeight, gameWidth, tableHeight);
     
-    static Image background = new Image("src/sprites/background.png", 1920, 1080, 1920/2,1080/2);
+    static Image background = new Image("src/sprites/backgroundDark1.png", 2000, 1100, 1920/2 ,1080/2);
+    static Image instructions = new Image("src/sprites/instructions.png", 500, 900, 1920/2 ,1080/2);
 
     static Image tray = new Image("src/sprites/tray.png", 500, 200, (int) (gameWidth*0.8),(int)  (gameHeight*0.8));
 
+    static Image almond = new Image("src/sprites/almond.png", 50, 50, (int) (gameWidth*0.8 - 0),(int)  (gameHeight*0.8));
+    static Image banana = new Image("src/sprites/banana.png", 50, 50, (int) (gameWidth*0.8 + 90),(int)  (gameHeight*0.8));
+    static Image cheeto = new Image("src/sprites/cheeto.png", 50, 50, (int) (gameWidth*0.8 - 90),(int)  (gameHeight*0.8));
+    static Image chip = new Image("src/sprites/chip.png", 50, 50, (int) (gameWidth*0.8 + 170),(int)  (gameHeight*0.8));
+    static Image marshmellow = new Image("src/sprites/marshmellow.png", 50, 50, (int) (gameWidth*0.8 - 170),(int)  (gameHeight*0.8));
 
-    static Image almond = new Image("src/sprites/almond.png", 50, 50, gameWidth/2 + 60, gameHeight/2);
-    static Image banana = new Image("src/sprites/banana.png", 50, 50, gameWidth/2 - 60, gameHeight/2);
-    static Image cheeto = new Image("src/sprites/cheeto.png", 50, 50, gameWidth/2 + 120 , gameHeight/2 );
-    static Image chip = new Image("src/sprites/chip.png", 50, 50, gameWidth/2 - 120, gameHeight/2);
-    static Image marshmellow = new Image("src/sprites/marshmellow.png", 50, 50, gameWidth/2 + 180, gameHeight/2);
+    static Image thermometer_image = new Image("src/sprites/marshmellow.png", 50, 50, 50,50);
+    static Thermometer thermometer = new Thermometer(thermometer_image, 50);
 
-    static String urlsList[] = {"src/sprites/banana.png", "src/sprites/almond.png", "src/sprites/cheeto.png"};
-    static Image test = new Image("src/sprites/banana.png", 50, 50, gameWidth/2, gameHeight/2, urlsList, FPS/5);
+    static String testUrlsList[] = {"src/sprites/banana.png", "src/sprites/almond.png", "src/sprites/cheeto.png"};
+    static Image test = new Image("src/sprites/banana.png", 50, 50, gameWidth/2, gameHeight/2, testUrlsList, FPS/5);
     
-    static Image[] food = {almond, banana, cheeto, chip};
+    static Image[] food = {almond, banana, cheeto, chip, marshmellow};
+    static Image[] dragabbles = {instructions};
     static Image[] props = {test,tray};
 
     Thread gameThread;
@@ -125,11 +129,16 @@ ll of the food is convered to energy - some of the heat is left on the food and 
         for(Image i : props){
             i.drawImage(g);
         }
-
+        for(Image i : dragabbles){
+            i.drawImage(g);
+        }
+        
         //Food
         for(Image i : food){
             i.drawImage(g);
         }
+
+        thermometer.drawImage(g);
         
         graphics.dispose();
     }
