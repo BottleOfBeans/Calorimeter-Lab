@@ -47,9 +47,9 @@ public class GameWindow extends JPanel implements Runnable {
     static Image matchStick = new Image("src/sprites/matchStick.png", 200, 100,  (int) (gameWidth*0.3)+60,(int)  (gameHeight*0.8));
 
     static int[] foodMasses = {9, 45, 2, 3, 8}; // almond, banana, cheeto, chip, marshmallow
-    static double[] finalMasses = {4, 20, 0.5, 1, 3}; // same order
+    static double[] finalMasses = {8.2, 42, 1.7, 2.3, 6.4}; // same order
 
-    static double[] heatContents = {6.0, 0.01, 5.7, 5.7, 3.1}; // same order
+    static double[] heatContents = {4.0, 1, 7.0, 8.0, 3.0}; // same order
 
     static double[] changeTemp = {
         ((foodMasses[0] - finalMasses[0]) * heatContents[0] * 1000 * 4.184) / (4.184 * massOfWater),

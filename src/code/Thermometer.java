@@ -38,7 +38,7 @@ public class Thermometer extends JPanel{
         image.drawImage(g);
 
         g.setColor(Color.RED);
-        g.fill(new Rectangle2D.Double((int)image.currentPos.x - 5, (int)image.currentPos.y - (image.height - ((temp/max_temp) * image.height)) - image.height/2 - 5, 10, (temp/max_temp) * image.height));
+        g.fill(new Rectangle2D.Double(image.currentPos.x - 5, image.currentPos.y - (image.height - ((temp) * image.height)) - image.height/2, 10, (temp) * image.height));
 
         //Text and Text Label
         Vector2 labelPos = new Vector2(image.currentPos.x - image.width/2, image.currentPos.y-labelHeight-image.height/2);
