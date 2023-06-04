@@ -1,16 +1,15 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.geom.Ellipse2D;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.awt.image.RescaleOp;
 
-public class Image extends JPanel{
+public class Image extends JPanel {
 
     public Vector2 currentPos;
     public String url;
@@ -22,6 +21,11 @@ public class Image extends JPanel{
     public int switchTicks = 0;
     public int FPS;
     public int animationIndex = 0;
+    public double mass = 0;
+    public boolean burned = false;
+    public double tempreture = 0;
+    public double finalMass = 0;
+    public double prevMass = 0;
 
     public Graphics2D graphics;
     
@@ -35,6 +39,21 @@ public class Image extends JPanel{
         interactableRadius = 50;
         this.setType();
         this.setSize();
+    }
+
+    public Image(String url, int width, int height, int xPos, int yPos, double mass, double tempreture, double finalMass){
+        this.url = url;
+        this.width = width;
+        this.height = height;
+        this.currentPos = new Vector2(xPos,yPos);
+        this.interactableRadius = Math.sqrt(width*width + height* height);
+        interactableRadius = 50;
+        this.setType();
+        this.setSize();
+        this.mass = mass;
+        this.tempreture = tempreture;
+        this.finalMass = finalMass;
+        this.prevMass = mass;
     }
 
 
@@ -70,6 +89,15 @@ public class Image extends JPanel{
         }
     }
    
+    public void darken(float factor){
+        RescaleOp op = new RescaleOp(factor, 0, null);
+        this.selfImage = op.filter(this.selfImage, null);    
+    }
+    public void lighten(){
+        RescaleOp op = new RescaleOp(4f, 0, null);
+        this.selfImage = op.filter(this.selfImage, null);    
+    }
+
     public void setType(){
         try{
             selfImage = ImageIO.read(new FileInputStream(url));
@@ -77,6 +105,7 @@ public class Image extends JPanel{
           catch(IOException e){
             e.printStackTrace();
         }
+        
     }    
 
     public static BufferedImage toBufferedImage(java.awt.Image img){

@@ -1,7 +1,6 @@
 import java.awt.MouseInfo;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Random;
 
 /**
  * Creates mouse input listener for panel.
@@ -15,7 +14,10 @@ public class MouseInput implements MouseListener
 
     @Override
     public void mouseClicked(MouseEvent e){   
-        ;
+        if(e.getButton() == MouseEvent.BUTTON3){
+            GameWindow.resetFoods();
+            
+        }
     }
     
     public static void updateSelected() {
@@ -60,6 +62,15 @@ public class MouseInput implements MouseListener
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        
+        if (selected == GameWindow.matchStick){
+            GameWindow.matchStick.currentPos = new Vector2 (GameWindow.gameWidth*0.3+60 ,  GameWindow.gameHeight*0.8);
+        }
+        else if (selected == GameWindow.thermometer.image){
+            GameWindow.thermometer.image.currentPos = new Vector2 (300 ,  300);
+        }
+        
+        
         selected = null;
         pressed = false;
     }

@@ -13,10 +13,11 @@ public class Thermometer extends JPanel{
     public int temp;
     public int max_temp = 100;
 
-    public int labelWidth = 100;
-    public int labelHeight = 50;
-
+    
     public int fontsize = 12;
+
+    public int labelWidth = fontsize*4;
+    public int labelHeight = fontsize;
 
 
     public Thermometer(Image image, int temp){
@@ -36,11 +37,8 @@ public class Thermometer extends JPanel{
 
         image.drawImage(g);
 
-        g.setColor(Color.GRAY);
-        g.fill(new Rectangle2D.Double((int)image.currentPos.x-image.width/2, (int)image.currentPos.y-image.height/2, image.width, image.height));
-
         g.setColor(Color.RED);
-        g.fill(new Rectangle2D.Double((int)image.currentPos.x, (int)image.currentPos.y - (image.height - getHeight()) - image.height/2, 10, this.getHeight()));
+        g.fill(new Rectangle2D.Double((int)image.currentPos.x - 5, (int)image.currentPos.y - (image.height - ((temp/max_temp) * image.height)) - image.height/2 - 5, 10, (temp/max_temp) * image.height));
 
         //Text and Text Label
         Vector2 labelPos = new Vector2(image.currentPos.x - image.width/2, image.currentPos.y-labelHeight-image.height/2);
@@ -48,8 +46,10 @@ public class Thermometer extends JPanel{
         g.fill(new Rectangle2D.Double((int)labelPos.x, (int)labelPos.y, labelWidth, labelHeight));
 
         g.setColor(Color.RED);
-        g.setFont(new Font("Serif", Font.BOLD, fontsize));
-        g.drawString(temp+"^C", (int)labelPos.x + labelWidth/2 - fontsize/2, (int)labelPos.y + labelHeight/2);
+        g.setFont(new Font("Roboto", Font.BOLD, fontsize));
+        
+        if (temp == -1){g.drawString("°C", (int)labelPos.x + labelWidth/2 - fontsize/2 - 5, (int)labelPos.y + labelHeight/2 + 5);}
+        else{g.drawString(temp+"°C", (int)labelPos.x + labelWidth/2 - fontsize/2 - 5, (int)labelPos.y + labelHeight/2 + 5);}
 
     }
 }
